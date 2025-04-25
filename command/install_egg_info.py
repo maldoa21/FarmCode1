@@ -1,83 +1,92 @@
-from distutils import log, dir_util
-import os, sys
+"""
+distutils.command.install_egg_info
 
-from setuptools import Command
-from setuptools import namespaces
-from setuptools.archive_util import unpack_archive
-from .._path import ensure_directory
-import pkg_resources
+Implements the Distutils 'install_egg_info' command, for installing
+a package's PKG-INFO metadata.
+"""
+
+import os
+import sys
+import re
+
+from ..cmd import Command
+from .. import dir_util
+from .._log import log
 
 
-class install_egg_info(namespaces.Installer, Command):
-    """Install an .egg-info directory for the package"""
+class install_egg_info(Command):
+    """Install an .egg-info file for the package"""
 
-    description = "Install an .egg-info directory for the package"
-
+    description = "Install package's PKG-INFO metadata as an .egg-info file"
     user_options = [
         ('install-dir=', 'd', "directory to install to"),
     ]
 
     def initialize_options(self):
         self.install_dir = None
-        self.install_layout = None
-        self.prefix_option = None
+
+    @property
+    def basename(self):
+        """
+        Allow basename to be overridden by child class.
+        Ref pypa/distutils#2.
+        """
+        return "%s-%s-py%d.%d.egg-info" % (
+            to_filename(safe_name(self.distribution.get_name())),
+            to_filename(safe_version(self.distribution.get_version())),
+            *sys.version_info[:2],
+        )
 
     def finalize_options(self):
-        self.set_undefined_options('install_lib',
-                                   ('install_dir', 'install_dir'))
-        self.set_undefined_options('install',('install_layout','install_layout'))
-        if sys.hexversion > 0x2060000:
-            self.set_undefined_options('install',('prefix_option','prefix_option'))
-        ei_cmd = self.get_finalized_command("egg_info")
-        basename = pkg_resources.Distribution(
-            None, None, ei_cmd.egg_name, ei_cmd.egg_version
-        ).egg_name() + '.egg-info'
-
-        if self.install_layout:
-            if not self.install_layout.lower() in ['deb']:
-                raise DistutilsOptionError("unknown value for --install-layout")
-            self.install_layout = self.install_layout.lower()
-            basename = basename.replace('-py%s' % pkg_resources.PY_MAJOR, '')
-        elif self.prefix_option or 'real_prefix' in sys.__dict__:
-            # don't modify for virtualenv
-            pass
-        else:
-            basename = basename.replace('-py%s' % pkg_resources.PY_MAJOR, '')
-
-        self.source = ei_cmd.egg_info
-        self.target = os.path.join(self.install_dir, basename)
-        self.outputs = []
+        self.set_undefined_options('install_lib', ('install_dir', 'install_dir'))
+        self.target = os.path.join(self.install_dir, self.basename)
+        self.outputs = [self.target]
 
     def run(self):
-        self.run_command('egg_info')
-        if os.path.isdir(self.target) and not os.path.islink(self.target):
-            dir_util.remove_tree(self.target, dry_run=self.dry_run)
-        elif os.path.exists(self.target):
-            self.execute(os.unlink, (self.target,), "Removing " + self.target)
+        target = self.target
+        if os.path.isdir(target) and not os.path.islink(target):
+            dir_util.remove_tree(target, dry_run=self.dry_run)
+        elif os.path.exists(target):
+            self.execute(os.unlink, (self.target,), "Removing " + target)
+        elif not os.path.isdir(self.install_dir):
+            self.execute(
+                os.makedirs, (self.install_dir,), "Creating " + self.install_dir
+            )
+        log.info("Writing %s", target)
         if not self.dry_run:
-            ensure_directory(self.target)
-        self.execute(
-            self.copytree, (), "Copying %s to %s" % (self.source, self.target)
-        )
-        self.install_namespaces()
+            with open(target, 'w', encoding='UTF-8') as f:
+                self.distribution.metadata.write_pkg_file(f)
 
     def get_outputs(self):
         return self.outputs
 
-    def copytree(self):
-        # Copy the .egg-info tree to site-packages
-        def skimmer(src, dst):
-            # filter out source-control directories; note that 'src' is always
-            # a '/'-separated path, regardless of platform.  'dst' is a
-            # platform-specific path.
-            for skip in '.svn/', 'CVS/':
-                if src.startswith(skip) or '/' + skip in src:
-                    return None
-            if self.install_layout and self.install_layout in ['deb'] and src.startswith('SOURCES.txt'):
-                log.info("Skipping SOURCES.txt")
-                return None
-            self.outputs.append(dst)
-            log.debug("Copying %s to %s", src, dst)
-            return dst
 
-        unpack_archive(self.source, self.target, skimmer)
+# The following routines are taken from setuptools' pkg_resources module and
+# can be replaced by importing them from pkg_resources once it is included
+# in the stdlib.
+
+
+def safe_name(name):
+    """Convert an arbitrary string to a standard distribution name
+
+    Any runs of non-alphanumeric/. characters are replaced with a single '-'.
+    """
+    return re.sub('[^A-Za-z0-9.]+', '-', name)
+
+
+def safe_version(version):
+    """Convert an arbitrary string to a standard version string
+
+    Spaces become dots, and all other non-alphanumeric characters become
+    dashes, with runs of multiple dashes condensed to a single dash.
+    """
+    version = version.replace(' ', '.')
+    return re.sub('[^A-Za-z0-9.]+', '-', version)
+
+
+def to_filename(name):
+    """Convert a project or version name to its filename-escaped form
+
+    Any '-' characters are currently replaced with '_'.
+    """
+    return name.replace('-', '_')
