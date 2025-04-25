@@ -1,5 +1,5 @@
 import railroad
-from pip._vendor import pyparsing
+import pyparsing
 import typing
 from typing import (
     List,

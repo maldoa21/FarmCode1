@@ -993,7 +993,7 @@ class ParserElement(ABC):
 
         Example::
 
-            from pip._vendor import pyparsing as pp
+            import pyparsing as pp
             pp.ParserElement.enable_left_recursion()
 
             E = pp.Forward("E")
@@ -1054,7 +1054,7 @@ class ParserElement(ABC):
 
         Example::
 
-            from pip._vendor import pyparsing
+            import pyparsing
             pyparsing.ParserElement.enable_packrat()
 
         Packrat parsing works similar but not identical to Bounded Recursion parsing,
