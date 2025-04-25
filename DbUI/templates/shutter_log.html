@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Full Shutter & Temperature Log</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>System Log Overview</h1>
+
+    <h2>Shutter Activity Log</h2>
+    <table>
+        <tr><th>Timestamp</th><th>Event</th></tr>
+        {% for log in logs %}
+        <tr><td>{{ log[0] }}</td><td>{{ log[1] }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Temperature Sensor Readings</h2>
+    <table>
+        <tr><th>Timestamp</th><th>Temperature</th></tr>
+        {% for temp in temperature_logs %}
+        <tr><td>{{ temp[0] }}</td><td>{{ temp[1] }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Shutter Events in the Last 24 Hours</h2>
+    <table>
+        <tr><th>Timestamp</th><th>Event</th></tr>
+        {% for log in last_24_hours_logs %}
+        <tr><td>{{ log[0] }}</td><td>{{ log[1] }}</td></tr>
+        {% else %}
+        <tr><td colspan="2">No data in the last 24 hours.</td></tr>
+        {% endfor %}
+    </table>
+
+    <a href="/">← Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+h1 {
+  color: #333;
+}
+table {
+  width: 70%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: white;
+}
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+th {
+  background-color: #007BFF;
+  color: white;
+}
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.action-button {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.open-btn {
+  background: green;
+}
+.close-btn {
+  background: red;
+}
+.auto-btn {
+  background: orange;
+}

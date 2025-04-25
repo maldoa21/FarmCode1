@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shutter Logs</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; padding: 20px; }
+    table { width: 90%; margin: auto; border-collapse: collapse; background: white; }
+    th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+    th { background: #007BFF; color: white; }
+    h2 { text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Shutter Event Logs</h2>
+  <table>
+    <thead>
+      <tr><th>Timestamp</th><th>Event</th></tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+        <tr><td>{{ log[0] }}</td><td>{{ log[1] }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p style="text-align:center; margin-top:20px;">
+    <a href="{{ url_for('index') }}">← Back to Dashboard</a>
+  </p>
+</body>
+</html>

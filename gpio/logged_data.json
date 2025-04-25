@@ -1,0 +1,27 @@
+{"timestamp": 1744233291.7494252, "event": "Starting continuous sensor monitoring..."}
+{"timestamp": 1744233291.74979, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233296.750068, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233301.0930645, "event": "Sensor monitoring stopped"}
+{"timestamp": 1744233353.9081848, "event": "Starting continuous sensor monitoring..."}
+{"timestamp": 1744233353.908511, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233358.9088612, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233363.9093459, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233368.9097807, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233368.9100196, "event": "Exceeded maximum retries (3). Waiting longer before next attempt."}
+{"timestamp": 1744233378.910355, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744233383.176644, "event": "Sensor monitoring stopped"}
+{"timestamp": 1744234414.5995333, "event": "Starting continuous sensor monitoring..."}
+{"timestamp": 1744234414.5998294, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234418.3325553, "event": "Sensor monitoring stopped"}
+{"timestamp": 1744234465.2761018, "event": "Starting continuous sensor monitoring..."}
+{"timestamp": 1744234465.2764158, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234470.276748, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234475.2772315, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234480.2776573, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234480.278861, "event": "Exceeded maximum retries (3). Waiting longer before next attempt."}
+{"timestamp": 1744234490.2792084, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234495.2796657, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234500.2801518, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234505.2806156, "event": "Failed to initialize Modbus instrument: [Errno 2] could not open port /dev/serial0: [Errno 2] No such file or directory: '/dev/serial0'"}
+{"timestamp": 1744234505.280839, "event": "Exceeded maximum retries (3). Waiting longer before next attempt."}
+{"timestamp": 1744234507.1206753, "event": "Sensor monitoring stopped"}
