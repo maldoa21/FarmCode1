@@ -9,7 +9,7 @@
 <body>
   <h1>Shutter Control System</h1>
   <p id="temperature">Current Temperature: {{ temperature }} °F</p>
-  
+  <p id="humidity" style="display: none;"></p> <!-- Optional -->
 
   <table>
     <thead>
@@ -66,7 +66,6 @@
   <p><a href="/shutter-data">🔎 View Full Shutter Log</a></p>
 
   <script>
-    // Function to update the temperature and humidity dynamically
     const updateSensorData = () => {
       fetch('/sensor-data?ts=' + new Date().getTime(), { cache: 'no-store' })
         .then(res => res.json())
@@ -76,14 +75,30 @@
             return;
           }
           document.getElementById('temperature').innerText = `Current Temperature: ${data.temperature} °F`;
-          document.getElementById('humidity').innerText = `Current Humidity: ${data.humidity} %`;
+          const humidity = document.getElementById('humidity');
+          if (data.humidity !== undefined) {
+            humidity.innerText = `Current Humidity: ${data.humidity} %`;
+            humidity.style.display = 'block';
+          }
         })
         .catch(console.error);
     };
 
-    // Call updateSensorData every 5 seconds
-    setInterval(updateSensorData, 5000);
-    updateSensorData(); // Call it once on page load
+    const updateShutterStatuses = () => {
+      const devices = ["Slug Shutter", "Slug Sidewall"];
+      devices.forEach(device => {
+        fetch(`/status/${encodeURIComponent(device)}`, { cache: 'no-store' })
+          .then(res => res.json())
+          .then(data => {
+            const id = "status-" + device.replace(/ /g, "_");
+            const cell = document.getElementById(id);
+            if (cell) {
+              cell.innerText = data.status;
+            }
+          })
+          .catch(console.error);
+      });
+    };
 
     const changeStatus = (device, action) => {
       fetch(`/change_status/${encodeURIComponent(device)}/${encodeURIComponent(action)}`, {
@@ -93,11 +108,16 @@
       .then(res => res.json())
       .then(data => {
         console.log(data.message);
+        updateShutterStatuses(); // ✅ Immediately update UI after button press
       })
       .catch(error => {
         console.error(`Error changing status:`, error);
       });
     };
+
+    setInterval(updateSensorData, 5000);
+    updateSensorData(); // Initial fetch
+    updateShutterStatuses(); // Initial status fetch
   </script>
 </body>
 </html>
